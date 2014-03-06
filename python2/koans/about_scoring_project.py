@@ -12,19 +12,27 @@ from runner.koan import *
 #
 # * A set of three ones is 1000 points
 #
+# [1,1,1] == 1000 pt
+#
 # * A set of three numbers (other than ones) is worth 100 times the
 #   number. (e.g. three fives is 500 points).
 #
+# [x, x, x] for x <> 1 == 100 * x
+#
 # * A one (that is not part of a set of three) is worth 100 points.
 #
+# [1, x, y] == 100 pt
+#
 # * A five (that is not part of a set of three) is worth 50 points.
+#
+# [5, x, y] == 50 pt
 #
 # * Everything else is worth 0 points.
 #
 #
 # Examples:
 #
-# score([1, 1, 1, 5, 1]) => 1150 points
+# score([1, 1, 1, 5, 1]) => 1150 points                                
 # score([2, 3, 4, 6, 2]) => 0 points
 # score([3, 4, 5, 3, 3]) => 350 points
 # score([1, 5, 1, 2, 4]) => 250 points
@@ -34,8 +42,39 @@ from runner.koan import *
 # Your goal is to write the score method.
 
 def score(dice):
-    # You need to write this method
-    pass
+    score = 0
+
+    def make_count(seed): 
+    
+        def count(list):
+            counter = 0 
+            for i in list:
+                if i == seed:
+                    counter += 1
+            return counter
+        return count
+
+    counts = [make_count(x)(dice) for x in range(1,7)]
+    
+    for pos, x in enumerate(counts, start = 1):
+
+        if pos == 1: 
+            if x >= 3:
+                score += 1000
+                x -= 3
+            score += x * 100 
+
+        if pos == 5: 
+            if x >= 3: 
+                score += 500
+                x -= 3
+            score += x * 50
+
+        elif x >= 3: 
+            score += pos * 100
+                             
+    return score
+
 
 
 class AboutScoringProject(Koan):

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from runner.koan import *
-
 import random
 
 
@@ -13,11 +12,16 @@ class DiceSet(object):
     @property
     def values(self):
         return self._values
+        
+    @values.setter
+    def values(self, value): 
+        self._values = value 
 
     def roll(self, n):
         # Needs implementing!
         # Tip: random.randint(min, max) can be used to generate random numbers
-        pass
+        self.values = [random.randint(1, 6) for x in range(0, n)]
+  
 
 
 class AboutDiceProject(Koan):
